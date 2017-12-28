@@ -1,6 +1,6 @@
-# Quasar App
+# Antojitos
 
-> A Quasar project
+> Aplicación para la gestión de antojitos.
 
 ## Build Setup
 
