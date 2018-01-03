@@ -25,8 +25,8 @@ export default new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
 
   routes: [
-    { path: '/', component: load('Hello') },
-
+    { path: '/', component: load('Index') },
+    { path: '/auth', component: load('auth/Index') },
     // Always leave this last one
     { path: '*', component: load('Error404') } // Not found
   ]
