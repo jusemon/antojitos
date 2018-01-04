@@ -80,7 +80,8 @@
     }
   }
 </script>
-<style scoped>
+<style lang="styl" scoped>
+  @import '~variables';
   .padding {
     padding: 10px
   }
@@ -119,10 +120,10 @@
     }
   }
   .heart {
-    fill: red;
     position: relative;
     top: 5px;
     height: 50vh;
     animation: heartbeat 1s ease infinite; 
+    fill: $primary;
   }
 </style>
