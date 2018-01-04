@@ -25,6 +25,10 @@
 
       <q-list no-border link inset-delimiter>
         <q-list-header>{{user.displayName}}</q-list-header>
+        <q-side-link item to="antojitos">
+          <q-item-side icon="list" />
+          <q-item-main label="Ver Antojitos" />
+        </q-side-link>
         <q-item @click="logout">
           <q-item-side icon="exit to app" />
           <q-item-main label="Cerrar Sesión" />
@@ -49,6 +53,7 @@ import {
   QIcon,
   QList,
   QListHeader,
+  QSideLink,
   QItem,
   QItemSide,
   QItemMain
@@ -64,6 +69,7 @@ export default {
     QIcon,
     QList,
     QListHeader,
+    QSideLink,
     QItem,
     QItemSide,
     QItemMain
