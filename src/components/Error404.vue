@@ -6,7 +6,7 @@
     <div>
       <div class="error-card shadow-4 bg-white column items-center justify-center no-wrap">
         <q-icon name="error_outline" color="grey-5" />
-        <p class="caption text-center">Oops. Nothing here...</p>
+        <p class="caption text-center">Oops. Nada por aqui...</p>
         <p class="text-center group">
           <q-btn
             v-if="canGoBack"
@@ -15,7 +15,7 @@
             @click="goBack"
             icon="keyboard_arrow_left"
           >
-            Go back
+            Regresar
           </q-btn>
           <q-btn
             color="primary"
@@ -23,7 +23,7 @@
             @click="$router.replace('/')"
             icon-right="home"
           >
-            Go home
+            Ir al inicio
           </q-btn>
         </p>
       </div>
@@ -58,10 +58,10 @@ export default {
     height 50vh
     width 100%
     padding-top 15vh
-    @media (orientation: landscape) { 
+    @media (orientation: landscape) {
       font-size 30vw
     }
-    @media (orientation: portrait) { 
+    @media (orientation: portrait) {
       font-size 30vh
     }
     color rgba(255, 255, 255, .2)

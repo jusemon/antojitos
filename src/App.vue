@@ -6,10 +6,14 @@
 </template>
 
 <script>
-/*
- * Root component
- */
-export default {}
+  /*
+   * Root component
+   */
+  // import * as firebase from 'firebase'
+  export default {
+    mounted: function () {
+    }
+  }
 </script>
 
 <style></style>
