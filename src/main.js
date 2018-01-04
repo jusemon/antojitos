@@ -11,12 +11,13 @@ require(`./themes/app.${__THEME}.styl`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
 import Vue from 'vue'
-import Quasar from 'quasar'
+import Quasar, { AddressbarColor } from 'quasar'
 import router from './router'
 import firebase from './plugins/firebase'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
+Vue.use(firebase, { router })
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
@@ -26,7 +27,8 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
-Vue.use(firebase, { router })
+AddressbarColor.set('#d32f2f')
+
 Quasar.start(() => {
   /* eslint-disable no-new */
   new Vue({
