@@ -76,7 +76,9 @@ export default {
   },
   data () {
     return {
-      user: this.$auth.currentUser
+      user: {
+        displayName: 'Invitado'
+      }
     }
   },
   computed: {
@@ -90,6 +92,9 @@ export default {
   mounted () {
     if (this.$auth.currentUser === null) {
       this.$router.push({ path: 'auth' })
+    }
+    else {
+      this.user = this.$auth.currentUser
     }
   }
 }
