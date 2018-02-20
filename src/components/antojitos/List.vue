@@ -32,11 +32,13 @@
     >
       <q-icon name="add" />
     </q-btn>
+    <q-uploader class="fixed"
+      style="left: 18px; bottom: 18px" :url="url" />
   </div>
 </template>
 
 <script>
-import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, Toast } from 'quasar'
+import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, Toast, Dialog } from 'quasar'
 export default {
   data () {
     return {
@@ -65,9 +67,21 @@ export default {
     remove (id, num) {
       var self = this
       self.$refs.popover[num].close()
-      var antojitos = self.$db.ref('antojitos')
-      antojitos.child(id).remove()
-      Toast.create('Se ha eliminado el antojito satisfactoriamente.')
+      Dialog.create({
+        title: '¡Atención!',
+        message: '¿Seguro que deseas borrar el antojito?',
+        buttons: [
+          'Cancelar',
+          {
+            label: 'Eliminar',
+            handler () {
+              var antojitos = self.$db.ref('antojitos')
+              antojitos.child(id).remove()
+              Toast.create('Se ha eliminado el antojito satisfactoriamente.')
+            }
+          }
+        ]
+      })
     }
   },
   components: {
