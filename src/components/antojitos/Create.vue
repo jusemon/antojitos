@@ -8,14 +8,6 @@
         @blur="$v.form.name.$touch"
       />
     </q-field>
-    <q-field :error="$v.form.description.$error" error-label="¡El campo es requerido!">
-      <q-input
-        v-model="form.description"
-        float-label="Descripción"
-        @blur="$v.form.description.$touch"
-        :error="$v.form.description.$error"
-      />
-    </q-field>
     <q-field :error="$v.form.place.$error" error-label="¡El campo es requerido!">
       <q-input
         v-model="form.place"
@@ -44,7 +36,6 @@ export default {
     return {
       form: {
         name: '',
-        description: '',
         place: ''
       }
     }
@@ -52,7 +43,6 @@ export default {
   validations: {
     form: {
       name: { required },
-      description: { required },
       place: { required }
     }
   },
@@ -65,15 +55,16 @@ export default {
         return
       }
       var antojitos = self.$db.ref('antojitos')
-      antojitos.push({
+      var antojo = {
         name: self.form.name,
-        description: self.form.description,
         place: self.form.place,
+        date: Date(),
         user: {
           id: self.$auth.currentUser.uid,
           photoURL: self.$auth.currentUser.photoURL
         }
-      })
+      }
+      antojitos.push(antojo)
       Toast.create('Se ha registrado el antojito satisfactoriamente.')
       self.$router.push({ name: 'list_antojitos' })
     }

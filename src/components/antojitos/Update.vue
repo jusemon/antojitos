@@ -5,22 +5,14 @@
     <q-field :error="$v.form.name.$error" error-label="¡El campo es requerido!">
       <q-input 
         v-model="form.name"
-        float-label="Nombre"
+        float-label="Antojo"
         @blur="$v.form.name.$touch"
-      />
-    </q-field>
-    <q-field :error="$v.form.description.$error" error-label="¡El campo es requerido!">
-      <q-input
-        v-model="form.description"
-        float-label="Descripción"
-        @blur="$v.form.description.$touch"
-        :error="$v.form.description.$error"
       />
     </q-field>
     <q-field :error="$v.form.place.$error" error-label="¡El campo es requerido!">
       <q-input
         v-model="form.place"
-        float-label="Posible lugar"
+        float-label="Lugar"
         @blur="$v.form.place.$touch"
         :error="$v.form.place.$error"
       />
@@ -46,7 +38,6 @@ export default {
       form: {
         id: '',
         name: '',
-        description: '',
         place: ''
       }
     }
@@ -54,7 +45,6 @@ export default {
   validations: {
     form: {
       name: { required },
-      description: { required },
       place: { required }
     }
   },
@@ -77,7 +67,7 @@ export default {
       var antojitos = self.$db.ref('antojitos')
       antojitos.child(self.form.id).update({
         name: self.form.name,
-        description: self.form.description,
+        date: Date(),
         place: self.form.place
       })
       Toast.create('Se ha actualizado el antojito satisfactoriamente.')
