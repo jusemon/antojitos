@@ -3,15 +3,23 @@
     ref="layout"
     view="lHh Lpr fff"
     :left-class="{'bg-grey-2': true}"
+    :page-class="{'bg-red-3': inForm}"
   >
     <q-toolbar slot="header">
       <q-btn
         flat
         @click="$refs.layout.toggleLeft()"
+        v-if="!inForm"
       >
         <q-icon name="menu" />
       </q-btn>
-
+      <q-btn
+        flat
+        @click="$router.go(-1)"
+        v-if="inForm"
+      >
+        <q-icon name="arrow_back" />
+      </q-btn>
       <q-toolbar-title class="text-center">
         Antojitos
       </q-toolbar-title>
@@ -79,6 +87,12 @@ export default {
     }
   },
   computed: {
+    inForm () {
+      if (['create_antojito', 'update_antojito'].indexOf(this.$route.name) > -1) {
+        return true
+      }
+      return false
+    }
   },
   methods: {
     logout () {
