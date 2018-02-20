@@ -14,9 +14,11 @@ import Vue from 'vue'
 import Quasar, { AddressbarColor } from 'quasar'
 import router from './router'
 import firebase from './plugins/firebase'
+import Vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
+Vue.use(Vuelidate) // Install Vuelidate for form validations
 Vue.use(firebase, { router })
 
 if (__THEME === 'mat') {

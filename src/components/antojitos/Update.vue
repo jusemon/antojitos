@@ -2,9 +2,29 @@
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
     <input v-model="form.id" type="hidden" />
-    <q-input v-model="form.name" float-label="Nombre" placeholder="Nombre del antojito" />
-    <q-input v-model="form.description" float-label="Descripción" placeholder="Descripción del antojito" />
-    <q-input v-model="form.place" float-label="Posible lugar" placeholder="Posible lugar del antojito" />
+    <q-field :error="$v.form.name.$error" error-label="¡El campo es requerido!">
+      <q-input 
+        v-model="form.name"
+        float-label="Nombre"
+        @blur="$v.form.name.$touch"
+      />
+    </q-field>
+    <q-field :error="$v.form.description.$error" error-label="¡El campo es requerido!">
+      <q-input
+        v-model="form.description"
+        float-label="Descripción"
+        @blur="$v.form.description.$touch"
+        :error="$v.form.description.$error"
+      />
+    </q-field>
+    <q-field :error="$v.form.place.$error" error-label="¡El campo es requerido!">
+      <q-input
+        v-model="form.place"
+        float-label="Posible lugar"
+        @blur="$v.form.place.$touch"
+        :error="$v.form.place.$error"
+      />
+    </q-field>
     <q-btn
       round
       color="primary"
@@ -19,6 +39,7 @@
 
 <script>
 import { QField, QInput, QBtn, QIcon, Toast } from 'quasar'
+import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
@@ -28,6 +49,13 @@ export default {
         description: '',
         place: ''
       }
+    }
+  },
+  validations: {
+    form: {
+      name: { required },
+      description: { required },
+      place: { required }
     }
   },
   created () {
@@ -41,6 +69,11 @@ export default {
   methods: {
     create () {
       var self = this
+      self.$v.form.$touch()
+      if (self.$v.form.$error) {
+        Toast.create('Por favor verifica los errores.')
+        return
+      }
       var antojitos = self.$db.ref('antojitos')
       antojitos.child(self.form.id).update({
         name: self.form.name,
