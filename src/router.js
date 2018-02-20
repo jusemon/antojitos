@@ -25,8 +25,36 @@ export default new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
 
   routes: [
-    { path: '/', component: load('Index'), name: 'antojitos' },
-    { path: '/auth', component: load('auth/Index') },
+    {
+      component: load('Index'),
+      path: '/antojitos',
+      alias: '/',
+      name: 'antojitos',
+      children: [
+        {
+          path: 'list',
+          alias: '',
+          component: load('antojitos/List'),
+          name: 'list_antojitos'
+        },
+        {
+          path: 'create',
+          component: load('antojitos/Create'),
+          name: 'create_antojito'
+        },
+        {
+          path: 'update/:id',
+          component: load('antojitos/Update'),
+          name: 'update_antojito'
+        },
+        {
+          path: 'delete/:id',
+          component: load('antojitos/Delete'),
+          name: 'delete_antojito'
+        }
+      ]
+    },
+    { path: '/auth', component: load('auth/Index'), name: 'auth' },
     // Always leave this last one
     { path: '*', component: load('Error404') } // Not found
   ]
