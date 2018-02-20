@@ -1,28 +1,17 @@
 <template>
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
-    <q-list highlight>
+    <q-list highlight >
       <q-list-header>Todos los antojitos</q-list-header>
-      <template v-for="(antojito, index, num) in antojitos">
+      <template v-for="(antojito, index) in antojitos">
         <q-item-separator />
-        <q-item :key="index">
+        <q-item @click="showActionSheet(index)"  :key="index">
           <q-item-side :avatar="antojito.user.photoURL" />
           <q-item-main>
             <q-item-tile label>{{antojito.name}}</q-item-tile>
-            <q-item-tile sublabel>{{antojito.description}}</q-item-tile>
+            <q-item-tile sublabel>{{antojito.place}}</q-item-tile>
           </q-item-main>
-          <q-item-side right icon="more_vert">
-            <q-popover ref="popover">
-              <q-list link>
-                <q-item @click="update(index)">
-                  <q-item-main label="Editar" />
-                </q-item>
-                <q-item @click="remove(index, num)">
-                  <q-item-main label="Eliminar" />
-                </q-item>
-              </q-list>
-            </q-popover>
-          </q-item-side>
+          <q-item-side right :stamp="ago(antojito.date)" />
         </q-item>
       </template>
     </q-list>
@@ -39,7 +28,7 @@
 </template>
 
 <script>
-import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, QItemSeparator, Toast, Dialog } from 'quasar'
+import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, QItemSeparator, Toast, Dialog, ActionSheet } from 'quasar'
 export default {
   data () {
     return {
@@ -65,9 +54,8 @@ export default {
     update (id) {
       this.$router.push({name: 'update_antojito', params: {id: id}})
     },
-    remove (id, num) {
+    remove (id) {
       var self = this
-      self.$refs.popover[num].close()
       Dialog.create({
         title: '¡Atención!',
         message: '¿Seguro que deseas borrar el antojito?',
@@ -80,6 +68,50 @@ export default {
               antojitos.child(id).remove()
               Toast.create('Se ha eliminado el antojito satisfactoriamente.')
             }
+          }
+        ]
+      })
+    },
+    ago (date) {
+      var current = new Date()
+      date = new Date(date)
+      var hasBeenPassed = (current.getTime() - date.getTime()) / 1000 / 60
+      var use = ''
+      if (hasBeenPassed < 1) {
+        return 'Hace menos de un minuto'
+      }
+      if (hasBeenPassed < 60) {
+        use = 'minuto'
+      }
+      else {
+        hasBeenPassed = hasBeenPassed / 60
+        if (hasBeenPassed < 60) {
+          use = 'hora'
+        }
+        else {
+          hasBeenPassed = hasBeenPassed / 24
+          use = 'día'
+        }
+      }
+      hasBeenPassed = parseInt(hasBeenPassed)
+      use = hasBeenPassed > 1 ? use + 's' : use
+      return 'Hace ' + hasBeenPassed + ' ' + use
+    },
+    showActionSheet (id) {
+      var self = this
+      ActionSheet.create({
+        title: 'Acciones',
+        // specify ONLY IF you want gallery mode:
+        actions: [
+          {
+            label: 'Editar',
+            icon: 'edit', // specify ONLY IF using icon
+            handler: () => self.update(id)
+          },
+          {
+            label: 'Eliminar',
+            icon: 'delete',
+            handler: () => self.remove(id)
           }
         ]
       })
