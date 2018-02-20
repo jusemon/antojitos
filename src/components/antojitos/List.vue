@@ -3,25 +3,28 @@
   <div class="layout-padding">
     <q-list highlight>
       <q-list-header>Todos los antojitos</q-list-header>
-      <q-item v-for="(antojito, index, num) in antojitos" :key="index">
-        <q-item-side :avatar="antojito.user.photoURL" />
-        <q-item-main>
-          <q-item-tile label>{{antojito.name}}</q-item-tile>
-          <q-item-tile sublabel>{{antojito.description}}</q-item-tile>
-        </q-item-main>
-        <q-item-side right icon="more_vert">
-          <q-popover ref="popover">
-            <q-list link>
-              <q-item @click="update(index)">
-                <q-item-main label="Editar" />
-              </q-item>
-              <q-item @click="remove(index, num)">
-                <q-item-main label="Eliminar" />
-              </q-item>
-            </q-list>
-          </q-popover>
-        </q-item-side>
-      </q-item>
+      <template v-for="(antojito, index, num) in antojitos">
+        <q-item-separator />
+        <q-item :key="index">
+          <q-item-side :avatar="antojito.user.photoURL" />
+          <q-item-main>
+            <q-item-tile label>{{antojito.name}}</q-item-tile>
+            <q-item-tile sublabel>{{antojito.description}}</q-item-tile>
+          </q-item-main>
+          <q-item-side right icon="more_vert">
+            <q-popover ref="popover">
+              <q-list link>
+                <q-item @click="update(index)">
+                  <q-item-main label="Editar" />
+                </q-item>
+                <q-item @click="remove(index, num)">
+                  <q-item-main label="Eliminar" />
+                </q-item>
+              </q-list>
+            </q-popover>
+          </q-item-side>
+        </q-item>
+      </template>
     </q-list>
     <q-btn
       round
@@ -32,13 +35,11 @@
     >
       <q-icon name="add" />
     </q-btn>
-    <q-uploader class="fixed"
-      style="left: 18px; bottom: 18px" :url="url" />
   </div>
 </template>
 
 <script>
-import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, Toast, Dialog } from 'quasar'
+import { QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, QItemSeparator, Toast, Dialog } from 'quasar'
 export default {
   data () {
     return {
@@ -85,7 +86,7 @@ export default {
     }
   },
   components: {
-    QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover
+    QList, QListHeader, QItem, QItemSide, QItemMain, QItemTile, QBtn, QIcon, QPopover, QItemSeparator
   }
 }
 </script>
