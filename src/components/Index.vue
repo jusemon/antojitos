@@ -24,8 +24,8 @@
       -->
 
       <q-list no-border link inset-delimiter>
-        <q-list-header>{{user.displayName}}</q-list-header>
-        <q-side-link item to="antojitos">
+        <q-list-header>{{$auth.currentUser.displayName}}</q-list-header>
+        <q-side-link item :to="{ name: 'list_antojitos' }">
           <q-item-side icon="list" />
           <q-item-main label="Ver Antojitos" />
         </q-side-link>
@@ -76,9 +76,6 @@ export default {
   },
   data () {
     return {
-      user: {
-        displayName: 'Invitado'
-      }
     }
   },
   computed: {
@@ -91,10 +88,7 @@ export default {
   },
   mounted () {
     if (this.$auth.currentUser === null) {
-      this.$router.push({ path: 'auth' })
-    }
-    else {
-      this.user = this.$auth.currentUser
+      this.$router.push({ name: 'auth' })
     }
   }
 }
