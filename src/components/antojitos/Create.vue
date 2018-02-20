@@ -1,9 +1,21 @@
 <template>
   <!-- if you want automatic padding use "layout-padding" class -->
   <div class="layout-padding">
-    <q-input v-model="form.name" float-label="Nombre" placeholder="Nombre del antojito" />
-    <q-input v-model="form.description" float-label="Descripción" placeholder="Descripción del antojito" />
-    <q-input v-model="form.place" float-label="Posible lugar" placeholder="Posible lugar del antojito" />
+    <q-field :error="$v.form.name.$error" error-label="¡El campo es requerido!">
+      <q-input 
+        v-model="form.name"
+        float-label="Nombre"
+        @blur="$v.form.name.$touch"
+      />
+    </q-field>
+    <q-field :error="$v.form.place.$error" error-label="¡El campo es requerido!">
+      <q-input
+        v-model="form.place"
+        float-label="Posible lugar"
+        @blur="$v.form.place.$touch"
+        :error="$v.form.place.$error"
+      />
+    </q-field>
     <q-btn
       round
       color="primary"
@@ -18,29 +30,42 @@
 
 <script>
 import { QField, QInput, QBtn, QIcon, Toast } from 'quasar'
+import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
       form: {
         name: '',
-        description: '',
         place: ''
       }
+    }
+  },
+  validations: {
+    form: {
+      name: { required },
+      place: { required }
     }
   },
   methods: {
     create () {
       var self = this
+      self.$v.form.$touch()
+      if (self.$v.form.$error) {
+        Toast.create('Por favor verifica los errores.')
+        return
+      }
       var antojitos = self.$db.ref('antojitos')
-      antojitos.push({
+      var antojo = {
         name: self.form.name,
-        description: self.form.description,
         place: self.form.place,
+        date: Date(),
+        success: false,
         user: {
           id: self.$auth.currentUser.uid,
           photoURL: self.$auth.currentUser.photoURL
         }
-      })
+      }
+      antojitos.push(antojo)
       Toast.create('Se ha registrado el antojito satisfactoriamente.')
       self.$router.push({ name: 'list_antojitos' })
     }

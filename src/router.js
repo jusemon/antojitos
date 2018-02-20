@@ -46,11 +46,6 @@ export default new VueRouter({
           path: 'update/:id',
           component: load('antojitos/Update'),
           name: 'update_antojito'
-        },
-        {
-          path: 'delete/:id',
-          component: load('antojitos/Delete'),
-          name: 'delete_antojito'
         }
       ]
     },
