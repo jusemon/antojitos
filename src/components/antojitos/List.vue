@@ -5,7 +5,7 @@
       <q-list-header>Todos los antojitos</q-list-header>
       <template v-for="(antojito, index) in antojitos">
         <q-item-separator />
-        <q-item @click="showActionSheet(index)"  :key="index">
+        <q-item @click="showActionSheet(index, antojito)"  :key="index">
           <q-item-side :avatar="antojito.user.photoURL" />
           <q-item-main>
             <q-item-tile label>{{antojito.name}}</q-item-tile>
@@ -72,6 +72,26 @@ export default {
         ]
       })
     },
+    checkAsSuccess (id) {
+      var self = this
+      Dialog.create({
+        title: '¡Atención!',
+        message: '¿Seguro que deseas marcar como cumplido el antojito?',
+        buttons: [
+          'Cancelar',
+          {
+            label: '¡Totalmente!',
+            handler () {
+              var antojitos = self.$db.ref('antojitos')
+              antojitos.child(id).update({
+                success: true
+              })
+              Toast.create('¡Se ha cumplido el antojito!')
+            }
+          }
+        ]
+      })
+    },
     ago (date) {
       var current = new Date()
       date = new Date(date)
@@ -97,12 +117,20 @@ export default {
       use = hasBeenPassed > 1 ? use + 's' : use
       return 'Hace ' + hasBeenPassed + ' ' + use
     },
-    showActionSheet (id) {
+    showActionSheet (id, antojo) {
+      if (antojo.success) {
+        return
+      }
       var self = this
       ActionSheet.create({
         title: 'Acciones',
         // specify ONLY IF you want gallery mode:
         actions: [
+          {
+            label: '¡Cumplido!',
+            icon: 'favorite', // specify ONLY IF using icon
+            handler: () => self.checkAsSuccess(id)
+          },
           {
             label: 'Editar',
             icon: 'edit', // specify ONLY IF using icon

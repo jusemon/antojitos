@@ -59,6 +59,7 @@ export default {
         name: self.form.name,
         place: self.form.place,
         date: Date(),
+        success: false,
         user: {
           id: self.$auth.currentUser.uid,
           photoURL: self.$auth.currentUser.photoURL

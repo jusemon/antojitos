@@ -68,7 +68,8 @@ export default {
       antojitos.child(self.form.id).update({
         name: self.form.name,
         date: Date(),
-        place: self.form.place
+        place: self.form.place,
+        success: false
       })
       Toast.create('Se ha actualizado el antojito satisfactoriamente.')
       self.$router.push({ name: 'list_antojitos' })
