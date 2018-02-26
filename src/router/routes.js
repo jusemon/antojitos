@@ -7,7 +7,7 @@ export default [
     children: [
       { path: 'list', alias: '', name: 'list_antojitos', component: () => import('pages/antojitos/list') },
       { path: 'create', name: 'create_antojito', component: () => import('pages/antojitos/create') },
-      { path: 'update:id', name: 'update_antojito', component: () => import('pages/antojitos/update') }
+      { path: 'update/:id', name: 'update_antojito', component: () => import('pages/antojitos/update') }
     ]
   },
   { // Always leave this as last one

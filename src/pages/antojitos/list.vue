@@ -27,8 +27,10 @@ export default {
   mounted () {
     var self = this
     var antojitos = self.$db.ref('antojitos')
+    self.$q.loading.show()
     antojitos.on('value', function (snapshot) {
       self.antojitos = snapshot.val()
+      self.$q.loading.hide()
     })
   },
   beforeDestroy () {
@@ -53,7 +55,7 @@ export default {
       }).then(() => {
         var antojitos = self.$db.ref('antojitos')
         antojitos.child(id).remove()
-        self.$q.notify('Se ha eliminado el antojito satisfactoriamente.')
+        self.$q.notify({ message: 'Se ha eliminado el antojito satisfactoriamente.', color: 'secondary' })
       }).catch(() => { })
     },
     checkAsSuccess (id) {
@@ -68,7 +70,7 @@ export default {
         antojitos.child(id).update({
           success: true
         })
-        self.$q.notify('¡Se ha cumplido el antojito!')
+        self.$q.notify({ message: '¡Se ha cumplido el antojito!', color: 'secondary' })
       }).catch(() => { })
     },
     ago (date) {

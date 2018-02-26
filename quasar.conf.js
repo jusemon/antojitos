@@ -74,7 +74,16 @@ module.exports = function (ctx) {
         'QItemSeparator',
         'QItemTile',
         'QField',
-        'QInput'
+        'QInput',
+        'QUploader',
+        'QSpinner',
+        'QProgress',
+        'QSlideTransition',
+        'QInputFrame',
+        'QCard',
+        'QCardTitle',
+        'QCardMedia',
+        'QCardActions'
       ],
       directives: [
         'Ripple'
@@ -83,7 +92,8 @@ module.exports = function (ctx) {
         'Notify',
         'ActionSheet',
         'Dialog',
-        'AddressbarColor'
+        'AddressbarColor',
+        'Loading'
       ]
     },
     // animations: 'all' --- includes all animations

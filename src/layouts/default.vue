@@ -117,7 +117,7 @@ export default {
   }
 }
 
-.in-form .q-if-focused.text-primary {
+.in-form .q-icon.cursor-pointer.material-icons.text-primary.q-item-icon, .in-form .q-if-focused.text-primary {
   color: white !important;
 }
 </style>
