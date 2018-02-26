@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     logout () {
-      console.log('logout')
       this.$auth.signOut()
     }
   },
@@ -84,6 +83,9 @@ export default {
     if (this.$auth.currentUser === null) {
       this.$router.push({ name: 'auth' })
     }
+  },
+  created () {
+    this.$q.addressbarColor.set('#d32f2f')
   }
 }
 </script>
