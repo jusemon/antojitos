@@ -1,12 +1,15 @@
 <template>
   <q-page padding>
     <input v-model="form.id" type="hidden" />
+
     <q-field dark :error="$v.form.name.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.name" float-label="Antojo" @blur="$v.form.name.$touch" />
     </q-field>
+
     <q-field dark :error="$v.form.place.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.place" float-label="Lugar" @blur="$v.form.place.$touch" :error="$v.form.place.$error" />
     </q-field>
+
     <q-field dark>
       <q-uploader ref="files"
         float-label="Imagen del antojito"

@@ -61,6 +61,12 @@ export default {
     this.$auth.getRedirectResult().then(result => {
       Loading.hide()
     }).catch(error => {
+      self.$q.dialog({
+        title: '¡Atención!',
+        message: JSON.stringify(error),
+        ok: '¡Oh no!'
+      }).then(() => {
+      }).catch(() => { })
       console.log(error)
     })
   }
