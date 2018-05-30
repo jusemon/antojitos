@@ -109,16 +109,15 @@ export default {
       var self = this
       this.$q.actionSheet({
         title: 'Acciones',
-        // specify ONLY IF you want gallery mode:
         actions: [
           {
             label: '¡Cumplido!',
-            icon: 'favorite', // specify ONLY IF using icon
+            icon: 'favorite',
             handler: () => self.checkAsSuccess(id)
           },
           {
             label: 'Editar',
-            icon: 'edit', // specify ONLY IF using icon
+            icon: 'edit',
             handler: () => self.update(id)
           },
           {
