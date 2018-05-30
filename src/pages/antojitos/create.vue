@@ -3,10 +3,12 @@
     <q-field dark :error="$v.form.name.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.name" float-label="Nombre" @blur="$v.form.name.$touch" />
     </q-field>
+
     <q-field dark :error="$v.form.place.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.place" float-label="Posible lugar" @blur="$v.form.place.$touch" :error="$v.form.place.$error"
       />
     </q-field>
+
     <q-field dark>
       <q-uploader ref="files"
         float-label="Imagen del antojito"
@@ -22,6 +24,7 @@
         :firebase-storage="upload_file"
       />
     </q-field>
+
     <q-btn round color="secondary" @click="create" class="fixed" style="right: 18px; bottom: 18px">
       <q-icon name="done" />
     </q-btn>

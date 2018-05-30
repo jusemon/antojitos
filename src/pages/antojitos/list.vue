@@ -45,7 +45,7 @@ export default {
     update (id) {
       this.$router.push({ name: 'update_antojito', params: { id: id } })
     },
-    remove (id) {
+    remove (id, antojo) {
       var self = this
       self.$q.dialog({
         title: '¡Atención!',
@@ -54,8 +54,14 @@ export default {
         cancel: 'Mejor no'
       }).then(() => {
         var antojitos = self.$db.ref('antojitos')
-        antojitos.child(id).remove()
-        self.$q.notify({ message: 'Se ha eliminado el antojito satisfactoriamente.', color: 'secondary' })
+        antojitos.child(id).remove().then(() => {
+          if (typeof antojo.images !== 'undefined') {
+            for (var index = 0; index < antojo.images.length; index++) {
+              self.$storage.ref(antojo.images[index]).delete()
+            }
+          }
+          self.$q.notify({ message: 'Se ha eliminado el antojito satisfactoriamente.', color: 'secondary' })
+        })
       }).catch(() => { })
     },
     checkAsSuccess (id) {
@@ -123,7 +129,7 @@ export default {
           {
             label: 'Eliminar',
             icon: 'delete',
-            handler: () => self.remove(id)
+            handler: () => self.remove(id, antojo)
           }
         ]
       }).catch(() => { })

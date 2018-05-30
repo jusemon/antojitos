@@ -1,32 +1,32 @@
 <template>
   <q-page padding>
     <input v-model="form.id" type="hidden" />
+
     <q-field dark :error="$v.form.name.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.name" float-label="Antojo" @blur="$v.form.name.$touch" />
     </q-field>
+
     <q-field dark :error="$v.form.place.$error" error-label="¡El campo es requerido!">
       <q-input dark v-model="form.place" float-label="Lugar" @blur="$v.form.place.$touch" :error="$v.form.place.$error" />
     </q-field>
-    <q-btn round color="secondary" @click="create" class="fixed" style="right: 18px; bottom: 18px">
-      <q-icon name="done" />
-    </q-btn>
+
     <q-field dark>
       <q-uploader ref="files"
         float-label="Imagen del antojito"
         dark
         v-model="form.files"
-        @add="file_added"
-        @remove:abort="file_removed"
-        @remove:cancel="file_removed"
-        @finish="upload_finish"
+        @add="fileAdded"
+        @remove:abort="fileRemoved"
+        @remove:cancel="fileRemoved"
+        @finish="uploadFinish"
         :canUpload="false"
         :autoExpand="true"
         :multiple="true"
-        :extensions="allowed_extensions"
-        :firebase-storage="upload_file"
+        :extensions="allowedExtensions"
+        :firebase-storage="uploadFile"
       />
     </q-field>
-    <q-card v-for="(image, index ) in form.images" :key="index" inline class="q-ma-sm">
+    <q-card v-for="(image, index) in form.images" :key="image.key" inline class="q-ma-sm">
       <q-item>
         <q-item-main>
           <q-item-tile label>{{image.name}}</q-item-tile>
@@ -36,9 +36,12 @@
         <img :src="image.url">
       </q-card-media>
       <q-card-actions>
-        <q-btn flat>Eliminar</q-btn>
+        <q-btn flat @click="deleteFile(index)">Eliminar</q-btn>
       </q-card-actions>
     </q-card>
+    <q-btn round color="secondary" @click="create" class="fixed" style="right: 18px; bottom: 18px">
+      <q-icon name="done" />
+    </q-btn>
   </q-page>
 </template>
 
@@ -55,8 +58,8 @@ export default {
         place: '',
         images: []
       },
-      file_queue_count: 0,
-      allowed_extensions: '.gif, .jpeg, .png, .jpg'
+      fileQueueCount: 0,
+      allowedExtensions: '.gif, .jpeg, .png, .jpg'
     }
   },
   validations: {
@@ -77,7 +80,11 @@ export default {
       } else {
         for (let index = 0; index < self.form.images.length; index++) {
           self.$storage.ref(self.form.images[index]).getDownloadURL().then((url) => {
-            Vue.set(self.form.images, index, { url: url, name: self.getImageName(self.form.images[index]) })
+            Vue.set(self.form.images, index, {
+              url: url,
+              name: self.getImageName(self.form.images[index]),
+              key: self.form.images[index]
+            })
             if (self.form.images.length === index + 1) {
               self.$q.loading.hide()
             }
@@ -103,7 +110,7 @@ export default {
         place: self.form.place,
         success: false
       }).then((obj) => {
-        if (self.file_queue_count > 0) {
+        if (self.fileQueueCount > 0) {
           self.$refs.files.upload()
         } else {
           self.$q.loading.hide()
@@ -112,13 +119,13 @@ export default {
         }
       })
     },
-    file_added (file) {
-      this.file_queue_count = this.file_queue_count + file.length
+    fileAdded (file) {
+      this.fileQueueCount = this.fileQueueCount + file.length
     },
-    file_removed () {
-      this.file_queue_count = this.file_queue_count - 1
+    fileRemoved () {
+      this.fileQueueCount = this.fileQueueCount - 1
     },
-    upload_file (file) {
+    uploadFile (file) {
       var self = this
       const originalName = file.name
       var image = `${Date.now()}.${file.name}`
@@ -127,14 +134,12 @@ export default {
           originalName
         }
       }
-      console.log(`${self.form.id}/${image}`)
       self.form.images.push(`${self.form.id}/${image}`)
       return self.$storage.ref(`${self.form.id}/${image}`).put(file, metadata)
     },
-    upload_finish () {
+    uploadFinish () {
       var self = this
       var antojitos = self.$db.ref('antojitos')
-      console.log(self.form.images)
       antojitos.child(self.form.id).update({
         images: self.form.images
       }).then(() => {
@@ -143,9 +148,24 @@ export default {
         self.$router.push({ name: 'list_antojitos' })
       })
     },
-    getImageName (image) {
-      var imageParts = image.split('/')
-      return image.substr(imageParts[0].length + 1 + imageParts[1].split('.')[0].length + 1)
+    getImageName (key) {
+      var imageParts = key.split('/')
+      return key.substr(imageParts[0].length + 1 + imageParts[1].split('.')[0].length + 1)
+    },
+    deleteFile (index) {
+      var self = this
+      self.$q.loading.show()
+      var file = self.form.images[index]
+      self.form.images.splice(index, 1)
+      self.$storage.ref(file.key).delete().then((res) => {
+        var antojitos = self.$db.ref('antojitos')
+        antojitos.child(self.form.id).update({
+          images: self.form.images
+        }).then(() => {
+          self.$q.loading.hide()
+          self.$q.notify({ message: '¡Oh no! ¡Se ha eliminado la imagen!', color: 'secondary' })
+        })
+      })
     }
   },
   components: { QUploader }
