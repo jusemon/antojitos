@@ -55,8 +55,10 @@ export default {
       }).then(() => {
         var antojitos = self.$db.ref('antojitos')
         antojitos.child(id).remove().then(() => {
-          for (var index = 0; index < antojo.images.length; index++) {
-            self.$storage.ref(antojo.images[index]).delete()
+          if (typeof antojo.images !== 'undefined') {
+            for (var index = 0; index < antojo.images.length; index++) {
+              self.$storage.ref(antojo.images[index]).delete()
+            }
           }
           self.$q.notify({ message: 'Se ha eliminado el antojito satisfactoriamente.', color: 'secondary' })
         })
