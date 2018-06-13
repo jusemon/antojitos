@@ -82,4 +82,9 @@ export default {
 .padding-bottom{
   padding-bottom: 60px
 }
+@media (min-width: 1200px) {
+  .bottom {
+    width: calc(100% - 140px);
+  }
+}
 </style>
