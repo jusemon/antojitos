@@ -16,6 +16,7 @@
       :avatar="message.user.photoURL"
       :text="[message.text]"
       :sent="message.user.id == $auth.currentUser.uid"
+      :stamp="stamp(message.date)"
     />
     <q-btn round color="primary" @click="sendMessage" class="fixed" style="right: 18px; bottom: 18px">
       <q-icon name="send" />
@@ -50,7 +51,7 @@ export default {
       var self = this
       var message = {
         text: self.message,
-        date: new Date(),
+        date: Date(),
         user: {
           id: self.$auth.currentUser.uid,
           photoURL: self.$auth.currentUser.photoURL,
@@ -59,6 +60,10 @@ export default {
       }
       self.connection.push(message)
       self.message = ''
+    },
+    stamp (date) {
+      var self = this
+      return self.$utils.stamp(date)
     }
   }
 }

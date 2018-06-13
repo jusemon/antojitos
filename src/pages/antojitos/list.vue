@@ -8,7 +8,7 @@
           <q-item-tile label>{{antojito.name}}</q-item-tile>
           <q-item-tile sublabel>{{antojito.place}}</q-item-tile>
         </q-item-main>
-        <q-item-side right :stamp="ago(antojito.date)" />
+        <q-item-side right :stamp="stamp(antojito.date)" />
       </q-item>
     </q-list>
     <q-btn round color="primary" @click="create" class="fixed" style="right: 18px; bottom: 18px">
@@ -79,34 +79,9 @@ export default {
         self.$q.notify({ message: '¡Se ha cumplido el antojito!', color: 'secondary' })
       }).catch(() => { })
     },
-    ago (date) {
-      var current = new Date()
-      date = new Date(date)
-      var hasBeenPassed = (current.getTime() - date.getTime()) / 1000 / 60
-      var use = ''
-      if (hasBeenPassed < 1) {
-        return 'Hace menos de un minuto'
-      }
-      if (hasBeenPassed < 60) {
-        use = 'minuto'
-      } else {
-        hasBeenPassed = hasBeenPassed / 60
-        if (hasBeenPassed < 24) {
-          use = 'hora'
-          if (hasBeenPassed < 2) {
-            return 'Hace una hora'
-          }
-        } else {
-          hasBeenPassed = hasBeenPassed / 24
-          use = 'día'
-          if (hasBeenPassed < 2) {
-            return 'Hace un día'
-          }
-        }
-      }
-      hasBeenPassed = parseInt(hasBeenPassed)
-      use = hasBeenPassed > 1 ? use + 's' : use
-      return 'Hace ' + hasBeenPassed + ' ' + use
+    stamp (date) {
+      var self = this
+      return self.$utils.stamp(date)
     },
     showActionSheet (id, antojo) {
       if (antojo.success) {

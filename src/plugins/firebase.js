@@ -1,6 +1,3 @@
-// import something here
-
-// leave the export, even if you don't use it
 import Firebase from 'firebase'
 
 const connection = Firebase.initializeApp(process.env.FIREBASE)

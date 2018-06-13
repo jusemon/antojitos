@@ -5,7 +5,8 @@ module.exports = function (ctx) {
     plugins: [
       'firebase',
       'vuelidate',
-      'addressbar-color'
+      'addressbar-color',
+      'utils'
     ],
     css: [
       'app.styl'
