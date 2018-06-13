@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev"
+    "dev": "quasar dev --fix",
+    "build": "quasar build"
   },
   "dependencies": {
     "firebase": "^4.10.0",

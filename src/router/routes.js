@@ -10,6 +10,14 @@ export default [
       { path: 'update/:id', name: 'update_antojito', component: () => import('pages/antojitos/update') }
     ]
   },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import('layouts/default'),
+    children: [
+      { path: '', name: 'messages', component: () => import('pages/chat/list') }
+    ]
+  },
   { // Always leave this as last one
     path: '/auth',
     name: 'auth',

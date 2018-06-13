@@ -39,11 +39,15 @@
         link
         inset-delimiter
       >
-        <q-list-header>{{$auth.currentUser.displayName}}</q-list-header>
+        <q-list-header>{{$auth.currentUser!=null?$auth.currentUser.displayName:''}}</q-list-header>
         <q-item :to="{ name: 'list_antojitos' }">
           <q-item-side icon="list" />
           <q-item-main label="Ver Antojitos" />
         </q-item>
+        <q-item :to="{ name: 'messages' }">
+            <q-item-side icon="chat" />
+            <q-item-main label="Chat" />
+          </q-item>
         <q-item @click.native="logout">
           <q-item-side icon="exit to app" />
           <q-item-main label="Cerrar Sesión" />
