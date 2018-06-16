@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import FrameMixin from 'quasar-framework/src/mixins/input-frame'
+import AlignMixin from 'quasar-framework/src/mixins/align'
 import { format } from 'quasar'
 const { humanStorageSize } = format
 
@@ -146,9 +146,14 @@ function initFile (file) {
   file.__progress = 0
 }
 
+const marginal = {
+  type: Array,
+  validator: v => v.every(i => 'icon' in i)
+}
+
 export default {
   name: 'q-uploader',
-  mixins: [FrameMixin],
+  mixins: [AlignMixin],
   props: {
     name: {
       type: String,
@@ -194,7 +199,28 @@ export default {
     sendRaw: {
       type: Boolean,
       default: false
-    }
+    },
+    prefix: String,
+    suffix: String,
+    stackLabel: String,
+    floatLabel: String,
+    error: Boolean,
+    warning: Boolean,
+    disable: Boolean,
+    color: {
+      type: String,
+      default: 'primary'
+    },
+    align: {
+      default: 'left'
+    },
+    dark: Boolean,
+    before: marginal,
+    after: marginal,
+    inverted: Boolean,
+    invertedLight: Boolean,
+    hideUnderline: Boolean,
+    noParentField: Boolean
   },
   data () {
     return {
@@ -233,6 +259,9 @@ export default {
       if (this.maxHeight) {
         return { maxHeight: this.maxHeight }
       }
+    },
+    isInverted () {
+      return this.inverted || this.invertedLight
     },
     dndClass () {
       const cls = [`text-${this.color}`]

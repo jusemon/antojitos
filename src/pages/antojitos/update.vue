@@ -26,7 +26,7 @@
         :firebase-storage="uploadFile"
       />
     </q-field>
-    <q-card v-for="(image, index) in form.images" :key="image.key" inline class="q-ma-sm">
+    <q-card v-for="(image, index) in images" :key="image.key" inline class="q-ma-sm">
       <q-item>
         <q-item-main>
           <q-item-tile label>{{image.name}}</q-item-tile>
@@ -36,10 +36,10 @@
         <img :src="image.url">
       </q-card-media>
       <q-card-actions>
-        <q-btn flat @click="deleteFile(index)">Eliminar</q-btn>
+        <q-btn flat @click="deleteFile(image.key, index)">Eliminar</q-btn>
       </q-card-actions>
     </q-card>
-    <q-btn round color="secondary" @click="create" class="fixed" style="right: 18px; bottom: 18px">
+    <q-btn round color="secondary" @click="update" class="fixed" style="right: 18px; bottom: 18px">
       <q-icon name="done" />
     </q-btn>
   </q-page>
@@ -48,7 +48,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 import QUploader from '../../components/QUploader'
-import Vue from 'vue'
+// import Vue from 'vue'
 export default {
   data () {
     return {
@@ -58,6 +58,7 @@ export default {
         place: '',
         images: []
       },
+      images: [],
       fileQueueCount: 0,
       allowedExtensions: '.gif, .jpeg, .png, .jpg'
     }
@@ -74,13 +75,14 @@ export default {
     var antojitos = self.$db.ref('antojitos')
     antojitos.child(self.$route.params.id).once('value', function (snapshot) {
       self.form = snapshot.val()
+      self.form.id = self.$route.params.id
       if (typeof self.form.images === 'undefined' || self.form.images.length === 0) {
         self.form.images = []
         self.$q.loading.hide()
       } else {
         for (let index = 0; index < self.form.images.length; index++) {
           self.$storage.ref(self.form.images[index]).getDownloadURL().then((url) => {
-            Vue.set(self.form.images, index, {
+            self.images.push({
               url: url,
               name: self.getImageName(self.form.images[index]),
               key: self.form.images[index]
@@ -91,11 +93,10 @@ export default {
           })
         }
       }
-      self.form.id = self.$route.params.id
     })
   },
   methods: {
-    create () {
+    update () {
       var self = this
       self.$v.form.$touch()
       if (self.$v.form.$error) {
@@ -152,13 +153,13 @@ export default {
       var imageParts = key.split('/')
       return key.substr(imageParts[0].length + 1 + imageParts[1].split('.')[0].length + 1)
     },
-    deleteFile (index) {
+    deleteFile (key, index) {
       var self = this
       self.$q.loading.show()
-      var file = self.form.images[index]
-      self.form.images.splice(index, 1)
-      self.$storage.ref(file.key).delete().then((res) => {
+      self.$storage.ref(key).delete().then((res) => {
         var antojitos = self.$db.ref('antojitos')
+        self.images.splice(index, 1)
+        self.form.images.splice(index, 1)
         antojitos.child(self.form.id).update({
           images: self.form.images
         }).then(() => {

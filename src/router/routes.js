@@ -2,7 +2,6 @@ export default [
   {
     path: '/antojitos',
     alias: '/',
-    name: 'antojitos',
     component: () => import('layouts/default'),
     children: [
       { path: 'list', alias: '', name: 'list_antojitos', component: () => import('pages/antojitos/list') },
@@ -12,7 +11,6 @@ export default [
   },
   {
     path: '/chat',
-    name: 'chat',
     component: () => import('layouts/default'),
     children: [
       { path: '', name: 'messages', component: () => import('pages/chat/list') }
