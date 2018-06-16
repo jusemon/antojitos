@@ -22,7 +22,6 @@
         :canUpload="false"
         :autoExpand="true"
         :multiple="true"
-        :extensions="allowedExtensions"
         :firebase-storage="uploadFile"
       />
     </q-field>

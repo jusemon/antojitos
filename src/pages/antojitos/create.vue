@@ -20,7 +20,6 @@
         :canUpload="false"
         :autoExpand="true"
         :multiple="true"
-        :extensions="allowed_extensions"
         :firebase-storage="upload_file"
       />
     </q-field>
