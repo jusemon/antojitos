@@ -18,7 +18,7 @@
       :sent="message.user.id == $auth.currentUser.uid"
       :stamp="stamp(message.date)"
     />
-    <q-btn round color="primary" @click="sendMessage" class="fixed" style="right: 18px; bottom: 18px">
+    <q-btn :disabled="message.length==0" round color="primary" @click="sendMessage" class="fixed" style="right: 18px; bottom: 18px">
       <q-icon name="send" />
     </q-btn>
   </q-page>
@@ -39,6 +39,9 @@ export default {
     self.$q.loading.show()
     self.connection.on('value', function (snapshot) {
       self.messages = snapshot.val()
+      setTimeout(() => {
+        self.scrollDown()
+      }, 10)
       self.$q.loading.hide()
     })
   },
@@ -61,6 +64,10 @@ export default {
       self.connection.push(message)
       self.message = ''
     },
+    scrollDown () {
+      var element = document.getElementsByClassName('padding-bottom')[0]
+      window.scrollTo(0, element.scrollHeight)
+    },
     stamp (date) {
       var self = this
       return self.$utils.stamp(date)
@@ -80,7 +87,7 @@ export default {
   border-radius: 10px;
 }
 .padding-bottom{
-  padding-bottom: 60px
+  padding-bottom: 80px
 }
 @media (min-width: 1200px) {
   .bottom {
