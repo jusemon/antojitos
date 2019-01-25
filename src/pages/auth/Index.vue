@@ -111,7 +111,7 @@ export default {
   .heart {
     position: relative;
     top: 5px;
-    height: 50vh;
+    height: 45vh;
     animation: heartbeat 1s ease infinite;
     fill: $primary;
   }
